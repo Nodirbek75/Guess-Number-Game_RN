@@ -6,11 +6,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert
+  Alert,
 } from "react-native";
 
 import Card from "../components/Card";
 import Input from "../components/Input";
+import NumberContainer from "../components/NumberContainer";
 import Colors from "../constants/colors";
 
 const StartingGameScreen = (props) => {
@@ -19,7 +20,7 @@ const StartingGameScreen = (props) => {
   const [selectedNumber, setSelectedNumber] = useState();
 
   const inputChangeHandler = (inputText) => {
-    setEnteredValue(inputText.replace(/[^0-9]/g,''));
+    setEnteredValue(inputText.replace(/[^0-9]/g, ""));
   };
 
   const resetHandler = () => {
@@ -30,23 +31,33 @@ const StartingGameScreen = (props) => {
   const confirmHandler = () => {
     const choosenNumber = enteredValue;
     if (isNaN(choosenNumber) || choosenNumber <= 0 || choosenNumber > 99) {
-      Alert.alert(
-          "Invalid Number!",
-          "Number has to be beetwen 1 and 99.",
-          [{text: 'Okay', style: 'destructive', onPress: resetHandler}]);
+      Alert.alert("Invalid Number!", "Number has to be beetwen 1 and 99.", [
+        { text: "okay", style: "destructive", onPress: resetHandler },
+      ]);
     } else {
       setConfirmed(true);
       setEnteredValue("");
       setSelectedNumber(choosenNumber);
+      Keyboard.dismiss();
     }
   };
 
   let confiremOutput;
 
-  if(confirmed){
-    confiremOutput = <Text>Entered Number is {selectedNumber}</Text>
+  if (confirmed) {
+    confiremOutput = (
+      <Card style={styles.summaryContainer}>
+        <Text>You selected</Text>
+        <NumberContainer>{selectedNumber}</NumberContainer>
+        <Button
+          title={"Start Game"}
+          color={Colors.primary}
+          onPress={() => props.onStartGame(selectedNumber)}
+        />
+      </Card>
+    );
   }
- 
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.screen}>
@@ -121,6 +132,10 @@ const styles = StyleSheet.create({
     color: "white",
     padding: 10,
     margin: 10,
+  },
+  summaryContainer: {
+    marginTop: 30,
+    alignItems: "center",
   },
 });
 
