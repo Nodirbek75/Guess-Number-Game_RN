@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Button, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
@@ -20,8 +20,18 @@ const GameScreen = (props) => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomNumber(1, 100, props.userChoice)
   );
+  const [rounds, setRounds] = useState(0);
   const currentMin = useRef(1);
   const currentMax = useRef(100);
+
+  const {userChoice, onGameOver} = props;
+
+
+  useEffect(() => {
+    if(currentGuess === userChoice){
+      onGameOver(rounds)
+    }
+  },[currentGuess, userChoice, onGameOver]);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -44,17 +54,10 @@ const GameScreen = (props) => {
       currentMax.current,
       currentGuess
     );
-    console.log(nextGuess);
-    console.log(props.userChoice);
-    if (nextGuess == props.userChoice) {
-      console.log("FOUND!");
-      Alert.alert("Congratulations!", "Your number is correctly found...", [
-        { text: "Start New Game", style: "default", onPress: props.onNewGame },
-      ]);
-    }
     setCurrentGuess(nextGuess);
+    setRounds(currentRound => currentRound + 1);
   };
-  
+
   return (
     <View style={styles.screen}>
       <Text>Guessed Number</Text>
