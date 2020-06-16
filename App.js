@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Platform, SafeAreaView } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import StartingGameScreen from "./screens/StartingGameScreen";
 import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
+import Colors from "./constants/colors";
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -57,17 +58,20 @@ export default function App() {
       />
     );
   }
-  
+
   return (
-    <View style={styles.screen}>
-      <Header title={"Guess a Number"} />
-      {content}
-    </View>
+    <SafeAreaView style={styles.screen}>
+        <Header style={styles.title} title={"Guess a Number"} />
+        {content}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  title: {
+    color: Platform.OS === "android" ? "#fff" : Colors.primary,
   },
 });

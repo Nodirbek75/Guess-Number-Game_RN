@@ -129,15 +129,6 @@ const styles = StyleSheet.create({
   input: {
     width: 50,
   },
-  error: {
-    borderColor: "red",
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: "salmon",
-    color: "white",
-    padding: 10,
-    margin: 10,
-  },
   summaryContainer: {
     marginTop: 30,
     alignItems: "center",
